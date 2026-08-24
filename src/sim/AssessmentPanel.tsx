@@ -12,6 +12,7 @@ import {
   type AssessmentReport,
 } from '../core/assessment'
 import { sessionLog } from '../core/session'
+import { UsageStatsPanel } from './UsageStatsPanel'
 import { useI18n } from '../i18n'
 
 export function AssessmentPanel() {
@@ -192,6 +193,8 @@ export function AssessmentPanel() {
             </ul>
           </div>
         )}
+
+        <UsageStatsPanel />
       </div>
     </div>
   )

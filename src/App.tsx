@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Simulator } from './sim/Simulator'
 import { TwinPanel } from './sim/TwinPanel'
 import { TheoryPanel } from './sim/TheoryPanel'
@@ -6,6 +6,7 @@ import { AssessmentPanel } from './sim/AssessmentPanel'
 import { LanguagePicker } from './sim/LanguagePicker'
 import { I18nProvider, useI18n } from './i18n'
 import { sessionLog } from './core/session'
+import { recordVisit, recordTab, heartbeat, HEARTBEAT_MS } from './core/stats'
 
 // Carga diferida: Three.js solo se descarga al abrir la pestaña 3D
 const Column3D = lazy(() => import('./sim/Column3D').then((m) => ({ default: m.Column3D })))
@@ -15,6 +16,23 @@ type Tab = 'sim' | 'twin' | 'theory' | 'eval' | '3d'
 function AppShell() {
   const [tab, setTab] = useState<Tab>('sim')
   const { t } = useI18n()
+
+  // Estatísticas de uso anónimas: visita, heartbeat de tempo e pestanas
+  useEffect(() => {
+    recordVisit()
+    const id = setInterval(heartbeat, HEARTBEAT_MS)
+    const onExit = () => heartbeat()
+    window.addEventListener('beforeunload', onExit)
+    return () => {
+      clearInterval(id)
+      window.removeEventListener('beforeunload', onExit)
+      heartbeat()
+    }
+  }, [])
+
+  useEffect(() => {
+    recordTab(tab)
+  }, [tab])
 
   const handleExportSession = () => {
     const { nEvents } = sessionLog.summary()

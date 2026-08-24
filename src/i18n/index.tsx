@@ -9,6 +9,7 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { translations, type Lang } from './translations'
+import { recordLang } from '../core/stats'
 
 export type { Lang }
 
@@ -60,6 +61,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const setLang = (l: Lang) => {
     setLangState(l)
     setGlobalLang(l)
+    recordLang(l)
     try {
       localStorage.setItem(STORAGE_KEY, l)
     } catch {
