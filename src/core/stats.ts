@@ -31,6 +31,13 @@ export interface UsageStatsData {
   timezone: string
   countryGuess: string
   tabsVisited: Record<string, number>
+  /** Nº de veces que se pulsa "Optimizar enerxía" */
+  optimizeCount: number
+  /** Tempo acumulado por pestana (ms) */
+  tabTime: Record<string, number>
+  /** Pestana activa e momento de entrada (para duración por pestana) */
+  currentTab: string | null
+  currentTabStart: number
 }
 
 const KEY = 'dtd-usage'
@@ -138,6 +145,10 @@ function defaults(): UsageStatsData {
     timezone: 'Unknown',
     countryGuess: 'Unknown',
     tabsVisited: {},
+    optimizeCount: 0,
+    tabTime: {},
+    currentTab: null,
+    currentTabStart: 0,
   }
 }
 
@@ -184,19 +195,44 @@ export function recordLang(lang: Lang): void {
   save(d)
 }
 
-/** Rexistra a pestana visitada. */
+/** Rexistra a entrada nunha pestana e acumula o tempo da pestana anterior. */
 export function recordTab(tab: string): void {
   const d = load()
+  const now = Date.now()
+  if (d.currentTab && d.currentTabStart > 0 && d.currentTab !== tab) {
+    d.tabTime[d.currentTab] = (d.tabTime[d.currentTab] ?? 0) + (now - d.currentTabStart)
+  }
+  d.currentTab = tab
+  d.currentTabStart = now
   d.tabsVisited[tab] = (d.tabsVisited[tab] ?? 0) + 1
   save(d)
 }
 
-/** Heartbeat: acumula o tempo de uso transcorrido desde a última chamada. */
+/** Rexistra unha execución da optimización enerxética. */
+export function recordOptimize(): void {
+  const d = load()
+  d.optimizeCount += 1
+  save(d)
+}
+
+/** Duración media (s) por visita dunha pestana. */
+export function avgTabTimeMs(tab: string): number {
+  const d = load()
+  const visits = d.tabsVisited[tab] ?? 0
+  if (visits === 0) return 0
+  return (d.tabTime[tab] ?? 0) / visits
+}
+
+/** Heartbeat: acumula o tempo de uso e o da pestana activa. */
 export function heartbeat(): void {
   const d = load()
   const now = Date.now()
   if (d.lastBeat > 0 && now > d.lastBeat) {
-    d.totalTimeMs += now - d.lastBeat
+    const delta = now - d.lastBeat
+    d.totalTimeMs += delta
+    if (d.currentTab) {
+      d.tabTime[d.currentTab] = (d.tabTime[d.currentTab] ?? 0) + delta
+    }
   }
   d.lastBeat = now
   save(d)

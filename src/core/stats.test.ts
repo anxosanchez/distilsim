@@ -8,12 +8,14 @@ import {
   recordVisit,
   recordLang,
   recordTab,
+  recordOptimize,
   heartbeat,
   getUsageStats,
   countryFromTimezone,
   formatDuration,
   resetUsageStats,
   sessionTimeMs,
+  avgTabTimeMs,
 } from './stats'
 
 function memStorage() {
@@ -92,6 +94,34 @@ describe('Estatísticas de uso', () => {
     expect(formatDuration(0)).toBe('0:00')
     expect(formatDuration(65_000)).toBe('1:05')
     expect(formatDuration(3_661_000)).toBe('1:01:01')
+  })
+
+  it('recordOptimize conta as optimizacións de enerxía', () => {
+    recordOptimize()
+    recordOptimize()
+    recordOptimize()
+    expect(getUsageStats().optimizeCount).toBe(3)
+  })
+
+  it('recordTab acumula o tempo por pestana', () => {
+    recordTab('sim')
+    now += 5000
+    recordTab('3d')
+    now += 3000
+    recordTab('sim')
+    const d = getUsageStats()
+    expect(d.tabTime.sim).toBe(5000)
+    expect(d.tabTime['3d']).toBe(3000)
+    // Media por visita: sim visitouse 2 veces → 2500 ms
+    expect(avgTabTimeMs('sim')).toBe(2500)
+  })
+
+  it('heartbeat acumula tamén o tempo da pestana activa', () => {
+    recordTab('sim')
+    now += 10_000
+    heartbeat()
+    expect(getUsageStats().tabTime.sim).toBe(10_000)
+    expect(getUsageStats().totalTimeMs).toBe(10_000)
   })
 
   it('resetUsageStats borra os datos', () => {

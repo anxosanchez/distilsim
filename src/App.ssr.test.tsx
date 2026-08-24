@@ -69,6 +69,7 @@ describe('Render da UI (SSR)', () => {
     expect(html).toContain('Xerar informe')
     expect(html).toContain('Corrixir cuestionario')
     expect(html).toContain('Estatísticas de uso')
+    expect(html).toContain('Duración por pestana')
   })
 
   it('Teoría renderiza o markdown con ecuacións KaTeX', () => {

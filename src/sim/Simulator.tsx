@@ -10,6 +10,7 @@ import { ProfileChart, TimeSeriesChart } from './charts'
 import { ALL_SYSTEMS } from '../core/components'
 import { sessionLog } from '../core/session'
 import { appEngine } from './engineStore'
+import { recordOptimize } from '../core/stats'
 import type { CondenserMode, ColumnInputs, ColumnStateVars } from '../core/columnDynamic'
 
 const SYS_KEYS = Object.keys(ALL_SYSTEMS)
@@ -219,6 +220,7 @@ export function Simulator() {
 
   const handleOptimize = async () => {
     if (optState.busy) return
+    recordOptimize()
     const saved = {
       state: engine.column.exportState(),
       inputs: engine.column.getInputs(),

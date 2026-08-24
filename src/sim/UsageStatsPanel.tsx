@@ -11,6 +11,7 @@ import {
   downloadUsageStats,
   resetUsageStats,
   formatDuration,
+  avgTabTimeMs,
   type UsageStatsData,
 } from '../core/stats'
 import { useI18n, type Lang } from '../i18n'
@@ -32,6 +33,7 @@ export function UsageStatsPanel() {
   const langs: Lang[] = ['gl', 'es', 'en']
   const maxLang = Math.max(1, ...langs.map((l) => data.languageChoices[l] ?? 0))
   const tabs = Object.entries(data.tabsVisited).sort((a, b) => b[1] - a[1])
+  const maxTabTime = Math.max(1, ...Object.values(data.tabTime))
 
   return (
     <div className="panel">
@@ -70,6 +72,10 @@ export function UsageStatsPanel() {
           <div className="k">{t('stats.pestanas')}</div>
           <div className="v">{tabs.length}</div>
         </div>
+        <div className="instrument">
+          <div className="k">{t('stats.optimize')}</div>
+          <div className="v">{data.optimizeCount}</div>
+        </div>
       </div>
 
       {/* Idioma da interface (histograma) */}
@@ -100,17 +106,36 @@ export function UsageStatsPanel() {
         })}
       </div>
 
-      {/* Pestanas visitadas */}
-      {tabs.length > 0 && (
-        <div style={{ marginTop: 10, fontSize: 12 }}>
-          {tabs.map(([k, n]) => (
-            <div key={k} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-dim)', marginBottom: 2 }}>
-              <span>{t(`tab.${k === '3d' ? '3d' : k}`)}</span>
-              <span style={{ fontFamily: 'var(--mono)' }}>{n}</span>
-            </div>
-          ))}
+      {/* Vista agregada: duración por pestana (barras) */}
+      <div style={{ marginTop: 12 }}>
+        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 4 }}>
+          {t('stats.duracionPestanas')}
         </div>
-      )}
+        {tabs.length === 0 ? (
+          <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>{t('stats.sinDatos')}</p>
+        ) : (
+          tabs.map(([k]) => {
+            const totalMs = data.tabTime[k] ?? 0
+            const avgMs = avgTabTimeMs(k)
+            const visits = data.tabsVisited[k] ?? 0
+            const width = maxTabTime > 0 ? (totalMs / maxTabTime) * 100 : 0
+            return (
+              <div key={k} style={{ marginBottom: 5 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-dim)', marginBottom: 2 }}>
+                  <span>{t(`tab.${k === '3d' ? '3d' : k}`)}</span>
+                  <span style={{ fontFamily: 'var(--mono)' }}>
+                    {formatDuration(totalMs)}
+                    {visits > 1 && <> · {t('stats.media')} {formatDuration(avgMs)}</>}
+                  </span>
+                </div>
+                <div style={{ height: 10, background: 'var(--bg-panel-2)', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${width}%`, background: 'var(--accent)', transition: 'width 0.3s' }} />
+                </div>
+              </div>
+            )
+          })
+        )}
+      </div>
 
       <div className="row" style={{ marginTop: 12 }}>
         <button className="btn primary" onClick={downloadUsageStats}>

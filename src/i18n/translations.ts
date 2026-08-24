@@ -326,6 +326,10 @@ export const translations: Record<Lang, Record<string, string>> = {
     'stats.borrar': 'Borrar datos',
     'stats.confirmarBorrar': 'Seguro que queres borrar os datos de uso?',
     'stats.privacidad': 'Datos anónimos gardados só neste navegador (localStorage). Sen servidores nin terceiros; o país é unha estimación pola zona horaria.',
+    'stats.optimize': 'Optimizacións de enerxía',
+    'stats.duracionPestanas': 'Duración por pestana',
+    'stats.media': 'media',
+    'stats.sinDatos': 'Aínda sen datos de uso',
   },
 
   es: {
@@ -629,6 +633,10 @@ export const translations: Record<Lang, Record<string, string>> = {
     'stats.borrar': 'Borrar datos',
     'stats.confirmarBorrar': '¿Seguro que quieres borrar los datos de uso?',
     'stats.privacidad': 'Datos anónimos guardados solo en este navegador (localStorage). Sin servidores ni terceros; el país es una estimación por zona horaria.',
+    'stats.optimize': 'Optimizaciones de energía',
+    'stats.duracionPestanas': 'Duración por pestaña',
+    'stats.media': 'media',
+    'stats.sinDatos': 'Aún sin datos de uso',
   },
 
   en: {
@@ -932,5 +940,9 @@ export const translations: Record<Lang, Record<string, string>> = {
     'stats.borrar': 'Clear data',
     'stats.confirmarBorrar': 'Are you sure you want to clear the usage data?',
     'stats.privacidad': 'Anonymous data stored only in this browser (localStorage). No servers or third parties; the country is an estimate from the time zone.',
+    'stats.optimize': 'Energy optimizations',
+    'stats.duracionPestanas': 'Duration per tab',
+    'stats.media': 'avg',
+    'stats.sinDatos': 'No usage data yet',
   },
 }
