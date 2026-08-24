@@ -77,12 +77,11 @@ body {
 .grid-sim > .col-right {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   height: 100%;
   gap: 12px;
   overflow: auto;
 }
-.grid-sim > .col-right .chart-toolbar { grid-column: 1 / -1; }
 .grid-sim > .col-right .panel {
   display: flex;
   flex-direction: column;

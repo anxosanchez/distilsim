@@ -42,7 +42,6 @@ describe('Render da UI (SSR)', () => {
     expect(html).toContain('D/V')
     expect(html).toContain('Optimización enerxética')
     expect(html).toContain('Optimizar enerxía')
-    expect(html).toContain('Proporción dos gráficos')
     expect(html).toContain('Modo de refluxo do condensador')
     expect(html).toContain('Sen refluxo')
     expect(html).toContain('Total')

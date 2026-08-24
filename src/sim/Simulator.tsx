@@ -6,7 +6,7 @@
 import { useI18n } from '../i18n'
 import { useEffect, useRef, useState } from 'react'
 import { SimEngine, type SimSnapshot, type OptimizeResult } from './engine'
-import { McKabeThieleChart, ProfileChart, TimeSeriesChart } from './charts'
+import { ProfileChart, TimeSeriesChart } from './charts'
 import { ALL_SYSTEMS } from '../core/components'
 import { sessionLog } from '../core/session'
 import type { CondenserMode, ColumnInputs, ColumnStateVars } from '../core/columnDynamic'
@@ -123,7 +123,6 @@ export function Simulator() {
   const [busy, setBusy] = useState(false)
   const [progress, setProgress] = useState(0)
   const [notice, setNotice] = useState<string | null>(null)
-  const [graphAspect, setGraphAspect] = useState(1)
   const [, force] = useState(0)
 
   // Modo de reflujo del condensador: sin reflujo / parcial / total
@@ -166,10 +165,8 @@ export function Simulator() {
   }, [engine])
 
   const sys = ALL_SYSTEMS[snap.config.systemKey]
-  const binary = sys.components.length === 2
   const nc = sys.components.length
   const xD0 = snap.column.xD[0]
-  const xB0 = snap.column.xB[nc - 1] // componente menos volátil en fondos
   const zF0 = snap.inputs.zF[0]
   // Componente mostrado en el perfil de composición (selector)
   const [profileComp, setProfileComp] = useState(0)
@@ -787,44 +784,8 @@ export function Simulator() {
         </div>
       </div>
 
-      {/* Columna de gráficos (50 % del ancho, todo el alto) — 3 gráficos apilados */}
+      {/* Columna de gráficos (50 % del ancho, todo el alto) — 2 gráficos apilados */}
       <div className="col-right">
-        <div className="panel chart-toolbar" style={{ padding: '8px 12px' }}>
-          <div className="ctrl" style={{ margin: 0 }}>
-            <label>
-              {t('sim.proporcionGraficos', { n: graphAspect.toFixed(2) })}
-            </label>
-            <input
-              type="range"
-              min={0.5}
-              max={1.6}
-              step={0.05}
-              value={graphAspect}
-              onChange={(e) => setGraphAspect(Number(e.target.value))}
-            />
-          </div>
-        </div>
-
-        <div className="panel">
-          {binary ? (
-            <McKabeThieleChart
-              system={sys}
-              P={sys.defaultPressure}
-              xD={xD0}
-              xB={xB0}
-              zF={zF0}
-              q={snap.inputs.q}
-              R={snap.inputs.R}
-              aspect={graphAspect}
-            />
-          ) : (
-            <div className="chart-note">
-              {t('sim.mtSoloBinario1')}
-              {t('sim.mtSoloBinario2')}
-            </div>
-          )}
-        </div>
-
         <div className="panel">
           <div className="row" style={{ marginBottom: 6 }}>
             <span style={{ fontSize: 12, color: 'var(--text-dim)', alignSelf: 'center' }}>
@@ -850,7 +811,6 @@ export function Simulator() {
             yLabelRight={t('chart.etapaTemp')}
             color="#58a6ff"
             colorRight="#f0883e"
-            aspect={graphAspect}
           />
         </div>
 
@@ -859,7 +819,6 @@ export function Simulator() {
             title={t('sim.produtosTemperaturas')}
             yLabel={t('sim.composicion')}
             yLabelRight={t('sim.temperatura')}
-            aspect={graphAspect}
             series={[
               { name: 'x_D', color: '#3fb950', points: tsXD, axis: 'left' },
               { name: 'x_B', color: '#f85149', points: tsXB, axis: 'left' },
