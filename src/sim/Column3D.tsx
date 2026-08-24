@@ -34,24 +34,24 @@ function tempColor(T: number, tMin: number, tMax: number): THREE.Color {
 /** Etiqueta de texto 3D (sprite) con canvas reutilizable para actualización en vivo. */
 function makeLabel(initial = ''): { sprite: THREE.Sprite; update: (text: string) => void } {
   const canvas = document.createElement('canvas')
-  canvas.width = 512
-  canvas.height = 128
+  canvas.width = 1024
+  canvas.height = 192
   const ctx = canvas.getContext('2d')!
   const texture = new THREE.CanvasTexture(canvas)
   texture.minFilter = THREE.LinearFilter
   const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, transparent: true })
   const sprite = new THREE.Sprite(material)
-  sprite.scale.set(3.2, 0.8, 1)
+  sprite.scale.set(2.4, 0.45, 1)
 
   const draw = (text: string) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.font = 'bold 46px system-ui, sans-serif'
+    ctx.font = '300 34px system-ui, sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
-    ctx.fillStyle = 'rgba(215,221,228,0.95)'
+    ctx.fillStyle = 'rgba(220,226,233,0.92)'
     const lines = text.split('\n')
     lines.forEach((line, i) => {
-      ctx.fillText(line, canvas.width / 2, canvas.height / 2 + (i - (lines.length - 1) / 2) * 52)
+      ctx.fillText(line, canvas.width / 2, canvas.height / 2 + (i - (lines.length - 1) / 2) * 40)
     })
     texture.needsUpdate = true
   }
