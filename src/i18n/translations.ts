@@ -304,6 +304,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'eng.modeloSincronizado': 'Modelo sincronizado coa planta',
     'eng.alimentacion30': '+30 % de alimentación',
     'eval.mision': 'Misión',
+    'tab.3d': 'Columna 3D',
+    'tab.3dCondTotal': 'Cond. total',
+    'tab.3dCondPartial': 'Cond. parcial',
+    'vista3d.hint': 'Arrastra para rotar · roda para zoom · botón dereito para desprazar',
+    'vista3d.frio': 'frío',
+    'vista3d.quente': 'quente',
+    'vista3d.prato': 'Prato {n}',
+    'vista3d.cargando': 'Cargando a vista 3D',
   },
 
   es: {
@@ -585,6 +593,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'eng.modeloSincronizado': 'Modelo sincronizado con la planta',
     'eng.alimentacion30': '+30 % de alimentación',
     'eval.mision': 'Misión',
+    'tab.3d': 'Columna 3D',
+    'tab.3dCondTotal': 'Cond. total',
+    'tab.3dCondPartial': 'Cond. parcial',
+    'vista3d.hint': 'Arrastra para rotar · rueda para zoom · botón derecho para desplazar',
+    'vista3d.frio': 'frío',
+    'vista3d.quente': 'caliente',
+    'vista3d.prato': 'Plato {n}',
+    'vista3d.cargando': 'Cargando la vista 3D',
   },
 
   en: {
@@ -866,5 +882,13 @@ export const translations: Record<Lang, Record<string, string>> = {
     'eng.modeloSincronizado': 'Model synced with the plant',
     'eng.alimentacion30': '+30 % feed',
     'eval.mision': 'Mission',
+    'tab.3d': '3D Column',
+    'tab.3dCondTotal': 'Total cond.',
+    'tab.3dCondPartial': 'Partial cond.',
+    'vista3d.hint': 'Drag to rotate · wheel to zoom · right button to pan',
+    'vista3d.frio': 'cold',
+    'vista3d.quente': 'hot',
+    'vista3d.prato': 'Tray {n}',
+    'vista3d.cargando': 'Loading the 3D view',
   },
 }

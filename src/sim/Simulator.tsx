@@ -9,6 +9,7 @@ import { SimEngine, type SimSnapshot, type OptimizeResult } from './engine'
 import { ProfileChart, TimeSeriesChart } from './charts'
 import { ALL_SYSTEMS } from '../core/components'
 import { sessionLog } from '../core/session'
+import { appEngine } from './engineStore'
 import type { CondenserMode, ColumnInputs, ColumnStateVars } from '../core/columnDynamic'
 
 const SYS_KEYS = Object.keys(ALL_SYSTEMS)
@@ -115,9 +116,7 @@ function ColumnSVG({ snap }: { snap: SimSnapshot }) {
 
 export function Simulator() {
   const { t } = useI18n()
-  const engineRef = useRef<SimEngine | null>(null)
-  if (!engineRef.current) engineRef.current = new SimEngine()
-  const engine = engineRef.current
+  const engine = appEngine
 
   const [snap, setSnap] = useState<SimSnapshot>(() => engine.snapshot())
   const [busy, setBusy] = useState(false)

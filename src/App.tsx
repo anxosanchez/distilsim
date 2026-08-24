@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Simulator } from './sim/Simulator'
 import { TwinPanel } from './sim/TwinPanel'
 import { TheoryPanel } from './sim/TheoryPanel'
@@ -7,7 +7,10 @@ import { LanguagePicker } from './sim/LanguagePicker'
 import { I18nProvider, useI18n } from './i18n'
 import { sessionLog } from './core/session'
 
-type Tab = 'sim' | 'twin' | 'theory' | 'eval'
+// Carga diferida: Three.js solo se descarga al abrir la pestaña 3D
+const Column3D = lazy(() => import('./sim/Column3D').then((m) => ({ default: m.Column3D })))
+
+type Tab = 'sim' | 'twin' | 'theory' | 'eval' | '3d'
 
 function AppShell() {
   const [tab, setTab] = useState<Tab>('sim')
@@ -30,6 +33,9 @@ function AppShell() {
           <button className={`tab ${tab === 'sim' ? 'active' : ''}`} onClick={() => setTab('sim')}>
             {t('tab.simulador')}
           </button>
+          <button className={`tab ${tab === '3d' ? 'active' : ''}`} onClick={() => setTab('3d')}>
+            {t('tab.3d')}
+          </button>
           <button className={`tab ${tab === 'twin' ? 'active' : ''}`} onClick={() => setTab('twin')}>
             {t('tab.twin')}
           </button>
@@ -51,6 +57,20 @@ function AppShell() {
       </header>
       <main className="main">
         {tab === 'sim' && <Simulator />}
+        {tab === '3d' && (
+          <Suspense
+            fallback={
+              <div
+                className="panel"
+                style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <p style={{ color: 'var(--text-dim)' }}>{t('vista3d.cargando')}…</p>
+              </div>
+            }
+          >
+            <Column3D />
+          </Suspense>
+        )}
         {tab === 'twin' && <TwinPanel />}
         {tab === 'theory' && <TheoryPanel />}
         {tab === 'eval' && <AssessmentPanel />}

@@ -24,6 +24,7 @@ describe('Render da UI (SSR)', () => {
     expect(html).toContain('Xemelgo dixital')
     expect(html).toContain('Teoría')
     expect(html).toContain('Avaliación')
+    expect(html).toContain('Columna 3D')
     expect(html).toContain('Exportar sesión')
     // O panel Simulador (pestana activa) debe estar presente
     expect(html).toContain('Destilado x_D')

@@ -227,6 +227,42 @@ body {
 }
 .twin-plots { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; }
 .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; }
+
+/* ---------- Vista 3D ---------- */
+.panel-3d { position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.panel-3d-head { display: flex; align-items: baseline; gap: 12px; flex-shrink: 0; }
+.panel-3d-head h3 { margin: 0; }
+.panel-3d-hint { font-size: 12px; color: var(--text-dim); }
+.viewport-3d { flex: 1; min-height: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); margin-top: 10px; cursor: grab; }
+.viewport-3d:active { cursor: grabbing; }
+.legend-3d {
+  position: absolute; left: 16px; bottom: 14px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--text-dim);
+  background: rgba(13,17,23,0.75); padding: 5px 10px; border-radius: 20px;
+  border: 1px solid var(--border); pointer-events: none;
+}
+.legend-3d-bar {
+  width: 90px; height: 8px; border-radius: 4px;
+  background: linear-gradient(90deg, hsl(237,90%,50%), hsl(180,90%,50%), hsl(90,90%,50%), hsl(30,90%,50%), hsl(0,90%,50%));
+}
+.tooltip-3d {
+  position: absolute; right: 14px; top: 14px;
+  background: rgba(22,27,34,0.92); border: 1px solid var(--accent);
+  border-radius: 10px; padding: 10px 14px; font-size: 12.5px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5); pointer-events: none;
+  min-width: 180px;
+}
+.tooltip-3d b { color: var(--accent); }
+.tooltip-3d div { margin-top: 3px; color: var(--text-dim); }
+.panel-3d-stats {
+  position: absolute; right: 14px; bottom: 14px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+  width: 300px; pointer-events: none;
+}
+.panel-3d-stats .instrument { padding: 6px 9px; }
+.panel-3d-stats .instrument .k { font-size: 10px; }
+.panel-3d-stats .instrument .v { font-size: 13px; }
 /* ---------- Selector de idioma ---------- */
 .lang-btn {
   display: inline-flex;

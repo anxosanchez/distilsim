@@ -13,13 +13,15 @@
   },
   "dependencies": {
     "@types/katex": "^0.16.8",
+    "@types/three": "^0.185.4",
     "katex": "^0.18.4",
     "mermaid": "^11.17.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-markdown": "^10.1.0",
     "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0"
+    "remark-math": "^6.0.0",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
