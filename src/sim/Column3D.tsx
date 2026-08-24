@@ -41,17 +41,17 @@ function makeLabel(initial = ''): { sprite: THREE.Sprite; update: (text: string)
   texture.minFilter = THREE.LinearFilter
   const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, transparent: true })
   const sprite = new THREE.Sprite(material)
-  sprite.scale.set(2.4, 0.45, 1)
+  sprite.scale.set(2.9, 0.55, 1)
 
   const draw = (text: string) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.font = '300 34px system-ui, sans-serif'
+    ctx.font = '300 46px system-ui, sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.fillStyle = 'rgba(220,226,233,0.92)'
     const lines = text.split('\n')
     lines.forEach((line, i) => {
-      ctx.fillText(line, canvas.width / 2, canvas.height / 2 + (i - (lines.length - 1) / 2) * 40)
+      ctx.fillText(line, canvas.width / 2, canvas.height / 2 + (i - (lines.length - 1) / 2) * 54)
     })
     texture.needsUpdate = true
   }
